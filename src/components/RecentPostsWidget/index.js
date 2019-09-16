@@ -1,6 +1,5 @@
 import React from "react"
 import { StaticQuery, graphql, Link } from "gatsby"
-import { createLocalLink } from "../../utils"
 
 
 const QUERY = graphql`
@@ -10,7 +9,7 @@ const QUERY = graphql`
         nodes {
           id
           title
-          link
+          uri
         }
       }
     }
@@ -28,7 +27,7 @@ const RecentPostsWidget = () => (
             {data.wpgraphql.posts.nodes.map(post => {
               return (
                 <li>
-                  <Link to={createLocalLink(post.link)}>{post.title}</Link>
+                  <Link to={`/blog/${post.uri}`}>{post.title}</Link>
                 </li>
               )
             })}

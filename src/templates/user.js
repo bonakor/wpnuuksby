@@ -1,6 +1,5 @@
 import React from "react"
 import SiteLayout from "../components/SiteLayout"
-import { Row, Col } from "antd"
 import { graphql } from "gatsby"
 import CategoriesWidget from "../components/CategoriesWidget"
 import RecentCommentsWidget from "../components/RecentCommentsWidget"
@@ -18,20 +17,16 @@ const User = props => {
   return (
     <SiteLayout location={location}>
       <Seo title={`${user.name}`} />
-      <Row type="flex" gutter={24}>
-        <Col xs={24} md={16}>
-          <h1>{user.name}</h1>
-          <h2>Latest Posts</h2>
-          {user.posts.nodes.map(post => (
-            <PostEntry post={post} />
-          ))}
-        </Col>
-        <Col xs={24} md={8}>
-          <RecentPostsWidget />
-          <CategoriesWidget />
-          <RecentCommentsWidget />
-        </Col>
-      </Row>
+
+      <h1>{user.name}</h1>
+      <h2>Latest Posts</h2>
+      {user.posts.nodes.map(post => (
+        <PostEntry post={post} />
+      ))}
+
+      <RecentPostsWidget />
+      <CategoriesWidget />
+      <RecentCommentsWidget />
     </SiteLayout>
   )
 }

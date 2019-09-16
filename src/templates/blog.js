@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import { graphql, navigate } from "gatsby"
-import { Button, Col, Row } from "antd"
 import CategoriesWidget from "../components/CategoriesWidget"
 import RecentCommentsWidget from "../components/RecentCommentsWidget"
 import RecentPostsWidget from "../components/RecentPostsWidget"
@@ -25,9 +24,9 @@ class IndexPage extends Component {
     }
 
     return (
-      <Button type="primary" onClick={() => navigate(previousLink)}>
+      <button type="primary" onClick={() => navigate(previousLink)}>
         Previous Posts
-      </Button>
+      </button>
     )
   }
 
@@ -38,12 +37,12 @@ class IndexPage extends Component {
 
     if (hasNextPage) {
       return (
-        <Button
+        <button
           type="primary"
           onClick={() => navigate(`/page/${pageNumber + 1}`)}
         >
           Next Posts
-        </Button>
+        </button>
       )
     } else {
       return null
@@ -60,42 +59,19 @@ class IndexPage extends Component {
     return (
       <HomepageLayout pageNumber={pageNumber} location={{ location }}>
         <Seo title={`Blog${blogPageNumber}`} />
-        <Row type="flex" gutter={24}>
-          <Col xs={24} md={16}>
-            {data &&
-              data.wpgraphql &&
-              data.wpgraphql.posts.nodes.map(post => (
-                <div key={post.id}>
-                  <PostEntry post={post} />
-                </div>
-              ))}
-          </Col>
-          <Col xs={24} md={8}>
-            <RecentPostsWidget />
-            <CategoriesWidget />
-            <RecentCommentsWidget />
-          </Col>
-        </Row>
-        <Row
-          type="flex"
-          justify="space-between"
-          style={{
-            background: `#001529`,
-            margin: `50px -50px -50px -50px`,
-            padding: `25px`,
-          }}
-        >
-          <Col xs={12}>
-            <Row type="flex" justify="start">
-              {this.renderPreviousLink()}
-            </Row>
-          </Col>
-          <Col xs={12}>
-            <Row type="flex" justify="end">
-              {this.renderNextLink()}
-            </Row>
-          </Col>
-        </Row>
+        {data &&
+          data.wpgraphql &&
+          data.wpgraphql.posts.nodes.map(post => (
+            <div key={post.id}>
+              <PostEntry post={post} />
+            </div>
+          ))}
+        <RecentPostsWidget />
+        <CategoriesWidget />
+        <RecentCommentsWidget />
+        {this.renderPreviousLink()}
+
+        {this.renderNextLink()}
       </HomepageLayout>
     )
   }

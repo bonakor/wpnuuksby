@@ -1,7 +1,6 @@
 import React from "react"
 import SiteLayout from "../components/SiteLayout"
 import { graphql } from "gatsby"
-import { Row, Col } from "antd"
 import CategoriesWidget from "../components/CategoriesWidget"
 import RecentCommentsWidget from "../components/RecentCommentsWidget"
 import RecentPostsWidget from "../components/RecentPostsWidget"
@@ -19,17 +18,13 @@ const TagTemplate = props => {
     <SiteLayout location={location}>
       <Seo title={`${tag.title}`} />
       <h2>{tag.name}</h2>
-      <Row type="flex" gutter={24}>
-        <Col xs={24} md={16}>
-          {tag.posts.nodes &&
-            tag.posts.nodes.map(post => <PostEntry post={post} />)}
-        </Col>
-        <Col xs={24} md={8}>
-          <RecentPostsWidget />
-          <CategoriesWidget />
-          <RecentCommentsWidget />
-        </Col>
-      </Row>
+
+      {tag.posts.nodes &&
+        tag.posts.nodes.map(post => <PostEntry post={post} />)}
+
+      <RecentPostsWidget />
+      <CategoriesWidget />
+      <RecentCommentsWidget />
     </SiteLayout>
   )
 }

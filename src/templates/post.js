@@ -1,6 +1,5 @@
 import React, { Fragment } from "react"
 import { graphql } from "gatsby"
-import { Row, Col, Divider, Tag } from "antd"
 import SiteLayout from "../components/SiteLayout"
 import CategoriesWidget from "../components/CategoriesWidget"
 import RecentCommentsWidget from "../components/RecentCommentsWidget"
@@ -8,20 +7,20 @@ import RecentPostsWidget from "../components/RecentPostsWidget"
 import PostEntryMeta from "../components/PostEntryMeta"
 import Seo from "../components/Seo"
 import contentParser from "gatsby-wpgraphql-inline-images"
+import Img from "gatsby-image"
 
 const renderTermNodes = (nodes, title) => (
   <div>
     {title}
     {` `}
     {nodes.map(term => (
-      <Tag>{term.name}</Tag>
+      <p>{term.name}</p>
     ))}
   </div>
 )
 
 const renderTerms = (categoryNodes = [], tagNodes = []) => (
   <Fragment>
-    <Divider />
     {categoryNodes ? renderTermNodes(categoryNodes, `Categories: `) : null}
     {tagNodes && tagNodes.length ? renderTermNodes(tagNodes, `Tags: `) : null}
   </Fragment>
@@ -38,33 +37,47 @@ const Post = props => {
     },
   } = props
   const { title, content } = post
+  const postExcerpt = post.excerpt
+  const image = post.featuredImage
+  const isRegular = image && image.isRegular
+  let fluidData
+  if (!isRegular) {
+    fluidData = image && JSON.parse(image.content)
+  }
+  if (isRegular) {
+    fluidData = image && image.content
+  }
+
+  if (!image) {
+    return (
+      <SiteLayout location={location}>
+        <Seo title={`${post.title}`} description={postExcerpt}/>
+        <h1>{title}</h1>
+        <PostEntryMeta post={post} />
+        <div>{contentParser({ content }, { wordPressUrl, uploadsUrl })}</div>
+        {post.categories.nodes.length || post.tags.nodes.length
+          ? renderTerms(post.categories.nodes, post.tags.nodes)
+          : null}
+        <RecentPostsWidget />
+        <CategoriesWidget />
+        <RecentCommentsWidget />
+      </SiteLayout>
+    )
+  }
+
   return (
     <SiteLayout location={location}>
-      <Seo title={`${post.title}`} />
-      <Row type="flex" gutter={24}>
-        <Col xs={24} md={16}>
-          <h1>{title}</h1>
-          <Divider />
-          <Row type="flex" justify="space-around" gutter={24}>
-            <Col xs={24} md={6}>
-              <PostEntryMeta post={post} />
-            </Col>
-            <Col xs={24} md={18}>
-              <div>
-                {contentParser({ content }, { wordPressUrl, uploadsUrl })}
-              </div>
-              {post.categories.nodes.length || post.tags.nodes.length
-                ? renderTerms(post.categories.nodes, post.tags.nodes)
-                : null}
-            </Col>
-          </Row>
-        </Col>
-        <Col xs={24} md={8}>
-          <RecentPostsWidget />
-          <CategoriesWidget />
-          <RecentCommentsWidget />
-        </Col>
-      </Row>
+      <Seo title={`${post.title}`} meta />
+      <h1>{title}</h1>
+      <PostEntryMeta post={post} />
+      <Img fluid={fluidData} />
+      <div>{contentParser({ content }, { wordPressUrl, uploadsUrl })}</div>
+      {post.categories.nodes.length || post.tags.nodes.length
+        ? renderTerms(post.categories.nodes, post.tags.nodes)
+        : null}
+      <RecentPostsWidget />
+      <CategoriesWidget />
+      <RecentCommentsWidget />
     </SiteLayout>
   )
 }
@@ -78,12 +91,19 @@ export const pageQuery = graphql`
         title
         content
         uri
+        excerpt
         author {
           name
           slug
           avatar {
             url
           }
+        }
+        featuredImage {
+          sizes
+          sourceUrl
+          srcSet
+          content
         }
         tags {
           nodes {

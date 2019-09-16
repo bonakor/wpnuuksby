@@ -1,58 +1,12 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby WPGraphQL Source Demo`,
-    description: `Gatsby demo site with WPGraphQL as the source.`,
-    author: `@wpgraphql`,
-    wordPressUrl: `https://noh.progital.dev`,
+    title: `Nuuk`,
+    description: `Le site de Nuuk sur Gatsby.`,
+    author: `@bonakor`,
+    wordPressUrl: `https://gatsby.nuuk.fr`,
+    siteLink: `/`,
   },
   plugins: [
-    // Include Ant Design component library.
-    {
-      resolve: `gatsby-plugin-antd`,
-      options: {
-        style: true,
-      },
-    },
-    {
-      resolve: `gatsby-plugin-less`,
-      options: {
-        javascriptEnabled: true,
-        modifyVars: {
-          // DEFAULTS FOR ANT DESIGN
-          // Full list of variables can be found here:
-          // https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less
-          // @primary-color: #1890ff;
-          "layout-header-background": `#0e2339`,
-          // primary color for all components
-          "primary-color": `#1890ff`,
-          // @link-color: #1890ff;
-          "link-color": `#1890ff`,
-          // @success-color: #52c41a;
-          "success-color": `#52c41a`,
-          // @warning-color: #faad14;
-          "warning-color": `#faad14`,
-          // @error-color: #f5222d;
-          "error-color": `#f5222d`,
-          // @font-size-base: 14px;
-          // major text font size
-          "font-size-base": `16px`,
-          // @heading-color: rgba(0, 0, 0, .85);
-          "heading-color": `rgba(0, 0, 0, .85)`,
-          // @text-color: rgba(0, 0, 0, .65);
-          "text-color": `rgba(0, 0, 0, .65)`,
-          // @text-color-secondary : rgba(0, 0, 0, .45);
-          "text-color-secondary": `rgba(0, 0, 0, .45)`,
-          // @disabled-color : rgba(0, 0, 0, .25);
-          "disabled-color": `rgba(0, 0, 0, .25)`,
-          // @border-radius-base: 4px;
-          "border-radius-base": `4px`,
-          // @border-color-base: #d9d9d9;
-          "border-color-base": `#d9d9d9`,
-          // @box-shadow-base: 0 2px 8px rgba(0, 0, 0, .15);
-          "box-shadow-base": `0 2px 8px rgba(0, 0, 0, .15)`,
-        },
-      },
-    },
     // Setup WPGraphQL.com to be the source
     {
       resolve: `gatsby-source-graphql`,
@@ -62,14 +16,14 @@ module.exports = {
         // This is field under which it's accessible
         fieldName: `wpgraphql`,
         // Url to query from
-        url: `https://noh.progital.dev/graphql`,
+        url: `https://gatsby.nuuk.fr/graphql`,
       },
     },
     {
       resolve: "gatsby-wpgraphql-inline-images",
       options: {
-        wordPressUrl: `https://noh.progital.dev/`,
-        uploadsUrl: `https://noh.progital.dev/wp-content/uploads/`,
+        wordPressUrl: `https://gatsby.nuuk.fr/`,
+        uploadsUrl: `https://gatsby.nuuk.fr/wp-content/uploads/`,
         processPostTypes: ["Page", "Post"],
         graphqlTypeName: `WPGraphQL`,
       },
@@ -98,6 +52,6 @@ module.exports = {
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.app/offline
-    `gatsby-plugin-offline`,
+    //`gatsby-plugin-offline`,
   ],
 }
